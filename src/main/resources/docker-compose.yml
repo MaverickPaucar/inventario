@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongo-client:
+    image: mongo:latest
+    container_name: mongo-client
+    ports:
+      - 27018:27017
+  productapp-main:
+    image: productapp:v1
+    depends_on:
+      - mongo-client
+    container_name: productapp-main-1
+    environment:
+      - SERVER_PORT=9010
+    ports:
+      - 9010:9010
+    build: .
+  productapp-secondary:
+    image: productapp:v1
+    depends_on:
+      - mongo-client
+    container_name: productapp-secondary-1
+    environment:
+      - SERVER_PORT=9020
+    ports:
+      - 9020:9020
+    build: .
